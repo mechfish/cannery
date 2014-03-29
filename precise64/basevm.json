@@ -2,11 +2,13 @@
   "variables": {
     "ssh_name": "vagrant",
     "ssh_pass": "vagrant",
-    "hostname": "basebox"
+    "hostname": "precise64-basebox",
+    "version_name": "precise64"
   },
 
   "builders": [
     {
+      "name": "basevm",
       "type": "virtualbox-iso",
       "boot_command": [
         "<esc><esc><enter><wait>",
@@ -18,7 +20,7 @@
         "initrd=/install/initrd.gz -- <enter><wait>"
       ],
       "boot_wait": "4s",
-      "guest_additions_path": "VBoxGuestAdditions_{{.Version}}.iso",
+      "guest_additions_mode": "disable",
       "guest_os_type": "Ubuntu_64",
       "headless": false,
       "http_directory": "http",
@@ -35,7 +37,8 @@
         [ "modifyvm", "{{.Name}}", "--cpus", "2" ],
         [ "modifyvm", "{{.Name}}", "--macaddress1", "0800279C73F6" ]
       ],
-      "virtualbox_version_file": ".vbox_version"
+      "virtualbox_version_file": ".vbox_version",
+      "vm_name": "packer-{{user `version_name`}}-basevm"
     }
   ],
 
@@ -45,7 +48,7 @@
   "provisioners": [
     {
       "override": {
-        "virtualbox-iso": {
+        "basevm": {
           "execute_command": "echo 'vagrant' | sudo -S sh '{{ .Path }}'"
         }
       },

@@ -1,3 +1,4 @@
-output-virtualbox-iso/*
+output-basevm/*
+output-basebox/*
 packer_cache/*
 *.box

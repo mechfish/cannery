@@ -12,5 +12,6 @@ echo "Cleaning up guest additions disk."
 cd /
 umount /mnt/vg
 rmdir /mnt/vg
+rm /home/vagrant/VBoxGuestAdditions*.iso
 
 

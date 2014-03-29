@@ -2,12 +2,17 @@
   "variables": {
     "ssh_name": "vagrant",
     "ssh_pass": "vagrant",
-    "hostname": "basebox"
+    "hostname": "precise64-basebox",
+    "version_name": "precise64"
   },
+
   "builders": [
     {
+      "name": "basebox",
       "type": "virtualbox-ovf",
-      "source_path": "output-virtualbox-iso/packer-virtualbox-iso.ovf",
+      "source_path": "output-basevm/packer-{{user `version_name`}}-basevm.ovf",
+      "guest_additions_mode": "upload",
+      "guest_additions_path": "VBoxGuestAdditions_{{.Version}}.iso",
       "ssh_username": "{{user `ssh_name`}}",
       "ssh_password": "{{user `ssh_pass`}}",
       "ssh_port": 22,
@@ -17,13 +22,18 @@
       ]
     }
   ],
+
   "post-processors": [
-    "vagrant"
+    {
+      "type": "vagrant",
+      "output": "{{user `version_name`}}_{{.BuildName}}_{{.Provider}}.box"
+    }
   ],
+
   "provisioners": [
     {
       "override": {
-        "virtualbox-ovf": {
+        "basebox": {
           "execute_command": "echo {{user `ssh_pass`}} | sudo -S sh '{{ .Path }}'"
         }
       },
