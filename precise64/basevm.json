@@ -20,7 +20,8 @@
         "initrd=/install/initrd.gz -- <enter><wait>"
       ],
       "boot_wait": "4s",
-      "guest_additions_mode": "disable",
+      "guest_additions_mode": "upload",
+      "guest_additions_path": "VBoxGuestAdditions_{{.Version}}.iso",
       "guest_os_type": "Ubuntu_64",
       "headless": false,
       "http_directory": "http",
@@ -53,7 +54,8 @@
         }
       },
       "scripts": [
-        "scripts/root_setup.sh"
+        "scripts/root_setup.sh",
+        "scripts/guest_additions.sh"
       ],
       "type": "shell"
     },

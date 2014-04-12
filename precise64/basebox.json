@@ -11,8 +11,6 @@
       "name": "basebox",
       "type": "virtualbox-ovf",
       "source_path": "output-basevm/packer-{{user `version_name`}}-basevm.ovf",
-      "guest_additions_mode": "upload",
-      "guest_additions_path": "VBoxGuestAdditions_{{.Version}}.iso",
       "ssh_username": "{{user `ssh_name`}}",
       "ssh_password": "{{user `ssh_pass`}}",
       "ssh_port": 22,
@@ -31,17 +29,6 @@
   ],
 
   "provisioners": [
-    {
-      "override": {
-        "basebox": {
-          "execute_command": "echo {{user `ssh_pass`}} | sudo -S sh '{{ .Path }}'"
-        }
-      },
-      "scripts": [
-        "scripts/guest_additions.sh"
-      ],
-      "type": "shell"
-    }
   ]
 }
 
