@@ -2,3 +2,4 @@ output-basevm/*
 output-basebox/*
 packer_cache/*
 *.box
+old-output/*
