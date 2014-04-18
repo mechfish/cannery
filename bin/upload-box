@@ -1,0 +1,17 @@
+#!/bin/sh
+
+if [ ! `which aws` ]; then
+    echo "You need to install the AWS CLI tools before we can upload your box to S3."
+    exit 1
+fi
+
+if [ -z $CANNERY_BUCKET ]; then
+    echo "You must set the CANNERY_BUCKET env variable before we can upload your box to S3."
+    exit 1
+fi
+
+echo "Uploading $1 to S3 URL:"
+echo "s3://${CANNERY_BUCKET}/$1"
+
+aws s3 cp $1 s3://${CANNERY_BUCKET}/
+

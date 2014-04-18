@@ -10,4 +10,8 @@ $(BOXNAME): basebox.json
 clean:
 	rm *.box
 
+# Upload box to S3
+.PHONY: upload
+upload:
+	../bin/upload-box $(BOXNAME)
 
