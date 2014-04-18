@@ -1,20 +1,18 @@
 # Cannery: A Set Of Packer Configurations
 
-This is a collection of packer config files which build Vagrant boxes
-for various versions of Linux.
+This is a collection of Packer and Vagrant config files.
 
-At the moment it's focused primarily on Virtualbox.
+At the moment, it's focused on building Virtualbox-provided Vagrant
+boxes for Ubuntu, with various degrees of preconfiguring.
 
-Each build happens in stages:
+* In general, to make a box, change into the appropriate subdirectory
+  and type `make`.
 
-* First a base VM is built, using `packer build basevm.json`, but not
-  turned into a box. This contains the basic Linux install, but is
-  missing the Virtualbox Guest Additions. Because Virtualbox has this
-  tragic tendency to change every five freakin' minutes, the base box
-  has to be rebuilt with new Guest Additions all the time. And because
-  downloading Linux ISOs and packages from the internet is so effing
-  slow, it's better to cache them in base-VM form.
+* Base boxes are built with Packer.
 
-* Then, a basebox is built from the base VM using `packer build
-  basebox.json`.
+* More fully-configured boxes are layered atop the base box by:
+
+  * Using Vagrant to boot a base box.
+  * Configuring the base box using Ansible.
+  * Exporting the base box for upload to S3.
 
