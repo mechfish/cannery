@@ -1,0 +1,53 @@
+---
+- hosts: all
+  sudo: yes
+  vars:
+    bundler_version: "1.6.2"
+    ruby_version: "2.1"
+  tasks:
+    - name: Install Ansible apt dependencies
+      apt: pkg={{item}} state=installed
+      with_items:
+        - python-pycurl
+        - python-psycopg2
+        - libpq-dev
+
+    - name: Configure Brightbox Ruby apt repo
+      apt_repository: repo="ppa:brightbox/ruby-ng"
+
+    - name: Configure Chris Lea apt repo for node.js
+      apt_repository: repo="ppa:chris-lea/node.js"
+
+    - name: Update packages after adding repos
+      apt: update_cache=yes
+
+    - name: Install stack packages
+      apt: pkg={{item}} state=installed
+      with_items:
+        - "ruby{{ruby_version}}"
+        - "ruby{{ruby_version}}-dev"
+        - nodejs
+        - postgresql
+        - build-essential
+        - libsqlite3-dev
+        - sqlite
+
+    - name: Upgrade Linux packages
+      apt: upgrade=dist
+
+    - name: Install bash aliases
+      template:
+        src=templates/bash_aliases.j2
+        dest=/home/vagrant/.bash_aliases
+        mode=644
+        owner=vagrant
+        group=vagrant
+
+    - name: Install bundler
+      gem: name=bundler state=present version="{{bundler_version}}" user_install=no
+    
+- hosts: all
+  sudo: no
+  tasks:
+    - name: Preinstall gems for greater speed.
+      shell: bundle install --gemfile=/vagrant/Gemfile
