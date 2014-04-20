@@ -11,7 +11,7 @@ if [ -z $CANNERY_BUCKET ]; then
 fi
 
 echo "Uploading $1 to S3 URL:"
-echo "s3://${CANNERY_BUCKET}/$1"
+echo "https://s3.amazonaws.com/${CANNERY_BUCKET}/$1"
 
 aws s3 cp --acl public-read $1 s3://${CANNERY_BUCKET}/
 
