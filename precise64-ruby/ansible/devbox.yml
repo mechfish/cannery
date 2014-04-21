@@ -46,6 +46,9 @@
     - name: Install bundler
       gem: name=bundler state=present version="{{bundler_version}}" user_install=no
     
+    - name: Drop and recreate postgres templates with correct locale.
+      script: pg_rebuild_cluster.sh
+
 - hosts: all
   sudo: no
   tasks:
