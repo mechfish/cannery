@@ -1,11 +1,11 @@
 # EDIT ME: Change the BOXNAME if you are building a different distro.
-BOXNAME=precise64_basebox_virtualbox.box
+BOXNAME=precise64_distro_virtualbox.box
 
 PACKER=packer
 
 # Build the box
-$(BOXNAME): basebox.json
-	$(PACKER) build basebox.json
+$(BOXNAME): distro.json
+	$(PACKER) build distro.json
 
 # Clean up output files
 .PHONY: clean
