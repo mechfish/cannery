@@ -16,4 +16,4 @@ clean:
 # Upload to S3
 .PHONY: upload
 upload: $(BOXNAME).box
-	../bin/upload-box $(BOXNAME).box
+	../../bin/upload-box $(BOXNAME).box

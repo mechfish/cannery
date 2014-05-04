@@ -1,4 +1,6 @@
+# EDIT ME: Change the BOXNAME if you are building a different distro.
 BOXNAME=precise64_basebox_virtualbox.box
+
 PACKER=packer
 
 # Build the box
@@ -13,5 +15,5 @@ clean:
 # Upload box to S3
 .PHONY: upload
 upload:
-	../bin/upload-box $(BOXNAME)
+	../../bin/upload-box $(BOXNAME)
 
