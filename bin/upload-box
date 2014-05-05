@@ -10,8 +10,13 @@ if [ -z $CANNERY_BUCKET ]; then
     exit 1
 fi
 
+# generate an S3 key that includes the build timestamp of the file
+MODTIME=`stat -f %m $1`
+BASENAME=`echo $1 | sed -E 's/^(.+)\.(.*)$/\1/'`
+EXTENSION=`echo $1 | sed -E 's/^(.+)\.(.*)$/\2/'`
+S3_FILENAME="${BASENAME}_${MODTIME}.${EXTENSION}"
+
 echo "Uploading $1 to S3 URL:"
-echo "https://s3.amazonaws.com/${CANNERY_BUCKET}/$1"
+echo "https://s3.amazonaws.com/${CANNERY_BUCKET}/${S3_FILENAME}"
 
-aws s3 cp --acl public-read $1 s3://${CANNERY_BUCKET}/
-
+aws s3 cp --acl public-read $1 s3://${CANNERY_BUCKET}/${S3_FILENAME}
