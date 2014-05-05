@@ -6,8 +6,10 @@ $(BOXNAME).box:
 	vagrant up
 	rm -f $(BOXNAME).box
 	vagrant package --output $(BOXNAME).box
-# now you can do:
-# vagrant box add --name $(BOXNAME) $(BOXNAME).box
+
+# Install box locally
+install: $(BOXNAME).box
+	$(VAGRANT) box add --clean --force --name local-$(BOXNAME) $(BOXNAME).box
 
 # Clean up output files
 #
