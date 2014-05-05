@@ -2,7 +2,9 @@ BOXNAME=precise64-ruby
 
 # Build the box
 $(BOXNAME).box:
+	rm -f Gemfile.lock
 	vagrant up
+	rm -f $(BOXNAME).box
 	vagrant package --output $(BOXNAME).box
 # now you can do:
 # vagrant box add --name $(BOXNAME) $(BOXNAME).box
@@ -10,8 +12,8 @@ $(BOXNAME).box:
 # Clean up output files
 .PHONY: clean
 clean:
-	rm $(BOXNAME).box
-	rm Gemfile.lock
+	rm -f $(BOXNAME).box
+	rm -f Gemfile.lock
 
 # Upload to S3
 .PHONY: upload

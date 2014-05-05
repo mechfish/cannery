@@ -5,12 +5,13 @@ PACKER=packer
 
 # Build the box
 $(BOXNAME): distro.json
+	rm -f *.box
 	$(PACKER) build distro.json
 
 # Clean up output files
 .PHONY: clean
 clean:
-	rm *.box
+	rm -f *.box
 
 # Upload box to S3
 .PHONY: upload
