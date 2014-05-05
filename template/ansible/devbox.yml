@@ -1,0 +1,17 @@
+---
+- hosts: all
+  sudo: yes
+  vars:
+    insert_var_here: "insert_value_here"
+  tasks:
+    - name: Install Ansible apt dependencies
+      apt: pkg={{item}} state=installed
+      with_items:
+        - python-pycurl
+        - python-psycopg2
+        - libpq-dev
+
+    - name: Install stack packages
+      apt: pkg={{item}} state=installed
+      with_items:
+        - build-essential
