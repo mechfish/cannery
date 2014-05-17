@@ -35,14 +35,6 @@
     - name: Upgrade Linux packages
       apt: upgrade=dist
 
-    - name: Install bash aliases
-      template:
-        src=templates/bash_aliases.j2
-        dest=/home/vagrant/.bash_aliases
-        mode=644
-        owner=vagrant
-        group=vagrant
-
     - name: Install bundler
       gem: name=bundler state=present user_install=no
     
@@ -52,5 +44,13 @@
 - hosts: all
   sudo: no
   tasks:
+    - name: Install bash aliases
+      template:
+        src=templates/bash_aliases.j2
+        dest=/home/vagrant/.bash_aliases
+        mode=644
+        owner=vagrant
+        group=vagrant
+
     - name: Preinstall gems for greater speed.
       shell: bundle install --gemfile=/vagrant/Gemfile
