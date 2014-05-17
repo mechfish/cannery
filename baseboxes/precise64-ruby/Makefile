@@ -1,11 +1,12 @@
 BOXNAME=precise64-ruby
+VAGRANT=vagrant
 
 # Build the box
 $(BOXNAME).box: Gemfile Vagrantfile ansible/devbox.yml ansible/templates/bash_aliases.j2
 	rm -f Gemfile.lock
-	vagrant up
+	$(VAGRANT) up
 	rm -f $(BOXNAME).box
-	vagrant package --output $(BOXNAME).box
+	$(VAGRANT) package --output $(BOXNAME).box
 
 # Install box locally
 install: $(BOXNAME).box
