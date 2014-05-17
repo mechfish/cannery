@@ -54,3 +54,11 @@
 
     - name: Preinstall gems for greater speed.
       shell: bundle install --gemfile=/vagrant/Gemfile
+
+    - name: Put user NPM directory into the path
+      lineinfile:
+        dest=/home/vagrant/.bashrc
+        line="export PATH=$PATH:$HOME/npm/bin"
+
+    - name: Set NPM prefix so we can install global packages without sudo.
+      shell: "npm config set prefix ~/npm"
