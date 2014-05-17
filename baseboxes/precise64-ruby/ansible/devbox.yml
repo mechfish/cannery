@@ -23,6 +23,7 @@
     - name: Install stack packages
       apt: pkg={{item}} state=installed
       with_items:
+        - git
         - "ruby{{ruby_version}}"
         - "ruby{{ruby_version}}-dev"
         - nodejs
