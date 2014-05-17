@@ -2,7 +2,6 @@
 - hosts: all
   sudo: yes
   vars:
-    bundler_version: "1.6.2"
     ruby_version: "2.1"
   tasks:
     - name: Install Ansible apt dependencies
@@ -44,7 +43,7 @@
         group=vagrant
 
     - name: Install bundler
-      gem: name=bundler state=present version="{{bundler_version}}" user_install=no
+      gem: name=bundler state=present user_install=no
     
     - name: Drop and recreate postgres templates with correct locale.
       script: pg_rebuild_cluster.sh
