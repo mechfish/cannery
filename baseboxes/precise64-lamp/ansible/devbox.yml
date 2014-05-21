@@ -1,0 +1,52 @@
+---
+- hosts: all
+  sudo: yes
+  tasks:
+    - name: Upgrade Linux packages
+      apt: upgrade=dist
+
+    - name: Install Ansible apt dependencies
+      apt: pkg={{item}} state=installed
+      with_items:
+        - python-pycurl
+        - python-psycopg2
+        - libpq-dev
+
+    - name: Install stack packages
+      apt: pkg={{item}} state=installed
+      with_items:
+        - git
+        - apache2
+        - php5
+        - mysql-server
+        - php5-mysql
+        - php5-curl
+        - php5-gd
+      notify:
+        - reload apache
+
+    - name: Install Python package for MySQL management via Ansible
+      apt: pkg=python-mysqldb state=installed
+
+    - name: Remove default apache site
+      command: /usr/sbin/a2dissite default removes=/etc/apache2/sites-enabled/000-default
+      notify:
+        - reload apache
+
+    - name: Remove default-ssl apache site
+      command: /usr/sbin/a2dissite default-ssl removes=/etc/apache2/sites-enabled/default-ssl
+      notify:
+        - reload apache
+
+    - name: Enable mod_rewrite
+      command: /usr/sbin/a2enmod rewrite creates=/etc/apache2/mods-enabled/rewrite.load
+      notify:
+        - restart apache
+
+  handlers:
+    - name: reload apache
+      service: name=apache2 state=reloaded
+
+    - name: restart apache
+      service: name=apache2 state=restarted
+
