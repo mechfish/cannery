@@ -1,0 +1,64 @@
+---
+- hosts: all
+  sudo: yes
+  vars:
+    ruby_version: "2.1"
+  tasks:
+    - name: Install Ansible apt dependencies
+      apt: pkg={{item}} state=installed
+      with_items:
+        - python-pycurl
+        - python-psycopg2
+        - libpq-dev
+
+    - name: Configure Brightbox Ruby apt repo
+      apt_repository: repo="ppa:brightbox/ruby-ng"
+
+    - name: Configure Chris Lea apt repo for node.js
+      apt_repository: repo="ppa:chris-lea/node.js"
+
+    - name: Update packages after adding repos
+      apt: update_cache=yes
+
+    - name: Install stack packages
+      apt: pkg={{item}} state=installed
+      with_items:
+        - git
+        - "ruby{{ruby_version}}"
+        - "ruby{{ruby_version}}-dev"
+        - nodejs
+        - postgresql
+        - build-essential
+        - libsqlite3-dev
+        - sqlite
+
+    - name: Upgrade Linux packages
+      apt: upgrade=dist
+
+    - name: Install bundler
+      gem: name=bundler state=present user_install=no
+    
+    - name: Drop and recreate postgres templates with correct locale.
+      script: pg_rebuild_cluster.sh
+
+- hosts: all
+  sudo: no
+  tasks:
+    - name: Install bash aliases
+      template:
+        src=templates/bash_aliases.j2
+        dest=/home/vagrant/.bash_aliases
+        mode=644
+        owner=vagrant
+        group=vagrant
+
+    - name: Preinstall gems for greater speed.
+      shell: bundle install --gemfile=/vagrant/Gemfile
+
+    - name: Put user NPM directory into the path
+      lineinfile:
+        dest=/home/vagrant/.bashrc
+        line="export PATH=$PATH:$HOME/npm/bin"
+
+    - name: Set NPM prefix so we can install global packages without sudo.
+      shell: "npm config set prefix ~/npm"
