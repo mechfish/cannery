@@ -41,6 +41,9 @@
     - name: Drop and recreate postgres templates with correct locale.
       script: pg_rebuild_cluster.sh
 
+    - name: Clean up package caches.
+      shell: apt-get clean
+
 - hosts: all
   sudo: no
   tasks:
